@@ -38,7 +38,7 @@
     <h1>전자어음할인 수수료 이자 계산기</h1>
     <form id="calculator">
         <label for="amount">할인할 전자어음 금액 (원):</label>
-        <input type="number" id="amount" required>
+        <input type="text" id="amount" oninput="formatNumber(this)" required>
 
         <label for="rate">이자율 (%):</label>
         <input type="number" id="rate" required>
@@ -52,8 +52,17 @@
     <h2 id="result"></h2>
 
     <script>
+        function formatNumber(input) {
+            // 숫자만 추출
+            const value = input.value.replace(/[^0-9]/g, '');
+            // 천 단위로 쉼표 추가
+            input.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        }
+
         function calculateInterest() {
-            const amount = parseFloat(document.getElementById('amount').value);
+            const amountString = document.getElementById('amount').value;
+            // 쉼표 제거 후 숫자로 변환
+            const amount = parseFloat(amountString.replace(/,/g, ''));
             const rate = parseFloat(document.getElementById('rate').value) / 100;
             const time = parseFloat(document.getElementById('time').value);
 
