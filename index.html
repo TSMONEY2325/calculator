@@ -8,20 +8,35 @@
         body {
             font-family: Arial, sans-serif;
             margin: 0;
-            padding: 0;
             display: flex;
-            justify-content: center;
-            align-items: center;
             height: 100vh;
             background-color: #f4f4f4;
         }
-        .container {
-            background-color: white;
+        .sidebar {
+            width: 200px; /* 사이드바 너비 */
+            background-color: #fff;
             padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            width: 90%;
-            max-width: 470px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        }
+        .sidebar h2 {
+            font-size: 1.5em;
+            margin: 0 0 20px;
+        }
+        .sidebar a {
+            display: block;
+            padding: 10px;
+            margin-bottom: 10px;
+            text-decoration: none;
+            color: #333;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+        .sidebar a:hover {
+            background-color: #e0e0e0;
+        }
+        .container {
+            flex: 1; /* 나머지 공간 차지 */
+            padding: 20px;
             text-align: center;
         }
         h1, h2 {
@@ -37,7 +52,7 @@
         }
         input {
             padding: 8px;
-            width: 50%;
+            width: 100%;
             margin: 0 auto 10px;
             display: block;
             text-align: right;
@@ -49,7 +64,7 @@
             color: white;
             border: none;
             cursor: pointer;
-            width: 60%;
+            width: 100%;
         }
         button:hover {
             background-color: #45a049;
@@ -104,10 +119,18 @@
     </style>
 </head>
 <body>
+    <div class="sidebar">
+        <h2>카테고리</h2>
+        <a href="#calculator">전자어음 할인 계산기</a>
+        <a href="#other1">카테고리 1</a>
+        <a href="#other2">카테고리 2</a>
+        <a href="#other3">카테고리 3</a>
+    </div>
+    
     <div class="container">
         <h1>전자어음할인</h1>
-        <h2>수수료 이자 계산기</h2>
-        <form id="calculator">
+        <h2 id="calculator">수수료 이자 계산기</h2>
+        <form id="calculator-form">
             <label for="amount">할인할 전자어음 금액 (원):</label>
             <input type="text" id="amount" oninput="formatNumber(this)" required>
 
@@ -219,23 +242,4 @@
 
             if (row.children.length > 0) {
                 tbody.appendChild(row);
-            }
-
-            table.appendChild(tbody);
-            calendar.appendChild(table);
-        }
-
-        function changeMonth(direction) {
-            selectedDate.setMonth(selectedDate.getMonth() + direction);
-            renderCalendar();
-        }
-
-        function selectDate(day) {
-            selectedDate.setDate(day);
-            const formattedDate = selectedDate.toISOString().split('T')[0]; // YYYY-MM-DD 형식
-            document.getElementById('days').value = Math.ceil((selectedDate - today) / (1000 * 60 * 60 * 24)) + 1; // 남은 날짜 계산
-            toggleCalendar();
-        }
-    </script>
-</body>
-</html>
+           
