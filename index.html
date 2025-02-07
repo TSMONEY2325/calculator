@@ -32,6 +32,15 @@
         button:hover {
             background-color: #45a049;
         }
+        #result {
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+        #formula {
+            margin-top: 10px;
+            font-style: italic;
+            color: #555;
+        }
     </style>
 </head>
 <body>
@@ -43,13 +52,14 @@
         <label for="rate">월이자율 (%):</label>
         <input type="number" id="rate" step="0.01" required>
 
-        <label for="time">남은 날짜 (일):</label>
-        <input type="number" id="time" required>
+        <label for="days">남은 날짜:</label>
+        <input type="number" id="days" required>
 
         <button type="button" onclick="calculateInterest()">계산하기</button>
     </form>
 
     <h2 id="result"></h2>
+    <div id="formula">계산 공식: (전자어음금액 * 월이자율 * 0.01 * 남은날짜) / 30</div>
 
     <script>
         function formatNumber(input) {
@@ -64,9 +74,9 @@
             // 쉼표 제거 후 숫자로 변환
             const amount = parseFloat(amountString.replace(/,/g, ''));
             const rate = parseFloat(document.getElementById('rate').value) / 100;
-            const time = parseFloat(document.getElementById('time').value);
+            const days = parseFloat(document.getElementById('days').value);
 
-            const interest = amount * rate * (time / 12);
+            const interest = (amount * rate * 0.01 * days) / 30;
             const resultText = `할인 수수료 이자는 ${interest.toFixed(2)} 원입니다.`;
             document.getElementById('result').innerText = resultText;
         }
