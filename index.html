@@ -27,7 +27,14 @@
             text-align: center;
             transition: transform 0.3s;
         }
-        label {
+        h1 {
+            display: block; /* 화면에 표시 */
+            font-size: 1.8em; /* 타이틀 크기 조정 */
+            color: #333; /* 색상 */
+            margin: 0 0 20px; /* 마진 조정 */
+        }
+       
+       label {
             display: block;
             margin: 10px 0 5px;
         }
@@ -92,10 +99,10 @@
             <div>(전자어음금액 × (월이자율/100) × 남은날짜) / 30</div>
             <div>※ 남은 날짜는 1일 이상이어야 합니다.</div>
         </div>
-       
-        <div id="link">
-            <a href="https://tsmoney.co.kr" target="_blank">전자어음할인 신청 바로가기</a>
-        </div>
+    </div>
+
+    <div id="link">
+        <a href="https://tsmoney.co.kr" target="_blank">전자어음할인 신청 바로가기</a>
     </div>
 
     <script>
