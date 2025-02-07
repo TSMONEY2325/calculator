@@ -153,8 +153,8 @@
                 return;
             }
 
-            const interest = (amount * rate * days) / 30;
-            const resultText = `할인 수수료는 ${interest.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 })} 원입니다.`;
+            const interest = Math.round((amount * rate * days) / 30); // 결과를 반올림
+            const resultText = `할인 수수료는 ${interest.toLocaleString()} 원입니다.`; // 천 단위 구분 적용
             document.getElementById('result').innerText = resultText;
         }
 
