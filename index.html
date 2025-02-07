@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>전자어음할인 수수료 이자 계산기</title>
     <style>
-        /* 기존 스타일 유지 */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -25,7 +24,83 @@
             max-width: 470px;
             text-align: center;
         }
-        /* ... (기타 스타일 유지) ... */
+        h1, h2 {
+            color: #333;
+            margin: 0;
+        }
+        h2 {
+            font-size: 2em;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        input {
+            padding: 8px;
+            width: 100%;
+            margin: 0 auto 10px;
+            display: block;
+            text-align: right;
+        }
+        button {
+            margin-top: 10px;
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+        #formula {
+            margin-top: 10px;
+            font-style: italic;
+            color: #555;
+        }
+        #link {
+            margin-top: 20px;
+            font-size: 1.1em;
+        }
+        .calendar {
+            display: none;
+            position: absolute;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
+        .calendar table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        .calendar th, .calendar td {
+            padding: 5px;
+            text-align: center;
+            cursor: pointer;
+        }
+        .calendar th {
+            background-color: #f2f2f2;
+        }
+        .calendar td:hover {
+            background-color: #e0e0e0;
+        }
+
+        /* 모바일 반응형 디자인을 위한 미디어 쿼리 */
+        @media (max-width: 600px) {
+            h2 {
+                font-size: 1.5em;
+            }
+            input, button {
+                width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
@@ -59,9 +134,14 @@
     </div>
 
     <script>
-        // 기존 스크립트 유지
-        // ...
-        
+        const today = new Date(2025, 1, 7); // 기준 날짜
+        let selectedDate = new Date(today); // 선택한 날짜 초기화
+
+        function formatNumber(input) {
+            const value = input.value.replace(/[^0-9]/g, '');
+            input.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        }
+
         function calculateInterest() {
             const amountString = document.getElementById('amount').value;
             const amount = parseFloat(amountString.replace(/,/g, ''));
@@ -77,8 +157,80 @@
             const resultText = `할인 수수료는 ${interest.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 })} 원입니다.`;
             document.getElementById('result').innerText = resultText;
         }
-        
-        // ...
-    </script>
-</body>
-</html>
+
+        function toggleCalendar() {
+            const calendar = document.getElementById('calendar');
+            calendar.style.display = calendar.style.display === 'block' ? 'none' : 'block';
+            if (calendar.style.display === 'block') {
+                renderCalendar();
+            }
+        }
+
+        function renderCalendar() {
+            const calendar = document.getElementById('calendar');
+            calendar.innerHTML = '';
+
+            const month = selectedDate.getMonth();
+            const year = selectedDate.getFullYear();
+
+            const firstDay = new Date(year, month, 1);
+            const lastDay = new Date(year, month + 1, 0);
+            const daysInMonth = lastDay.getDate();
+
+            const header = document.createElement('div');
+            header.innerHTML = `
+                <button onclick="changeMonth(-1)">◀</button>
+                ${year}년 ${month + 1}월
+                <button onclick="changeMonth(1)">▶</button>
+            `;
+            calendar.appendChild(header);
+
+            const table = document.createElement('table');
+            const thead = document.createElement('thead');
+            const tbody = document.createElement('tbody');
+
+            const daysOfWeek = ['일', '월', '화', '수', '목', '금', '토'];
+            const headerRow = document.createElement('tr');
+            daysOfWeek.forEach(day => {
+                const th = document.createElement('th');
+                th.innerText = day;
+                headerRow.appendChild(th);
+            });
+            thead.appendChild(headerRow);
+            table.appendChild(thead);
+
+            let row = document.createElement('tr');
+            for (let i = 0; i < firstDay.getDay(); i++) {
+                const td = document.createElement('td');
+                row.appendChild(td);
+            }
+
+            for (let day = 1; day <= daysInMonth; day++) {
+                const td = document.createElement('td');
+                td.innerText = day;
+                td.onclick = () => selectDate(day);
+                row.appendChild(td);
+
+                if (row.children.length === 7) {
+                    tbody.appendChild(row);
+                    row = document.createElement('tr');
+                }
+            }
+
+            if (row.children.length > 0) {
+                tbody.appendChild(row);
+            }
+
+            table.appendChild(tbody);
+            calendar.appendChild(table);
+        }
+
+        function changeMonth(direction) {
+            selectedDate.setMonth(selectedDate.getMonth() + direction);
+            renderCalendar();
+        }
+
+        function selectDate(day) {
+            selectedDate.setDate(day);
+            const formattedDate = selectedDate.toISOString().split('T')[0]; // YYYY-MM-DD 형식
+            document.getElementById('
