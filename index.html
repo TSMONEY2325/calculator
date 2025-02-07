@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>전자어음할인 수수료 이자 계산기</title>
+    <meta name="description" content="전자어음할인 수수료 이자 계산기">
+    <meta name="keywords" content="전자어음, 전자어음할인, 전자어음할인수수료, 전자어음할인이자, 전자어음할인계산, 전자어음할인수수료계산, 전자어음할인이자계산">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -23,13 +25,18 @@
             width: 90%;
             max-width: 470px;
             text-align: center;
+            transition: transform 0.3s;
         }
-        h1, h2 {
+        h1, h2, h3 {
             color: #333;
             margin: 0;
         }
         h2 {
             font-size: 2em;
+        }
+        h3 {
+            font-size: 1.5em;
+            margin-top: 20px;
         }
         label {
             display: block;
@@ -41,6 +48,8 @@
             margin: 0 auto 10px;
             display: block;
             text-align: right;
+            border: 1px solid #ccc;
+            border-radius: 4px;
         }
         button {
             margin-top: 10px;
@@ -50,6 +59,8 @@
             border: none;
             cursor: pointer;
             width: 70%;
+            border-radius: 4px;
+            transition: background-color 0.3s;
         }
         button:hover {
             background-color: #45a049;
@@ -72,7 +83,8 @@
 <body>
     <div class="container">
         <h1>전자어음할인</h1>
-        <h2>수수료 이자 계산기</h2>
+        <h2>전자어음할인 수수료 이자 계산기</h2>
+        <h3>전자어음할인 수수료 이자 계산 공식</h3>
         <form id="calculator">
             <label for="amount">할인할 전자어음 금액 (원):</label>
             <input type="text" id="amount" oninput="formatNumber(this)" required>
