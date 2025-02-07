@@ -55,7 +55,7 @@
         <label for="days">남은 날짜:</label>
         <input type="number" id="days" required>
 
-        <button type="button" onclick="calculateInterest()">계산하기</button>
+        <button type="button" onclick="calculateInterest()" aria-label="계산하기">계산하기</button>
     </form>
 
     <h2 id="result"></h2>
@@ -63,21 +63,23 @@
 
     <script>
         function formatNumber(input) {
-            // 숫자만 추출
             const value = input.value.replace(/[^0-9]/g, '');
-            // 천 단위로 쉼표 추가
             input.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
         }
 
         function calculateInterest() {
             const amountString = document.getElementById('amount').value;
-            // 쉼표 제거 후 숫자로 변환
             const amount = parseFloat(amountString.replace(/,/g, ''));
             const rate = parseFloat(document.getElementById('rate').value) / 100;
             const days = parseFloat(document.getElementById('days').value);
 
-            const interest = (amount * (rate/100) * days) / 30;
-            const resultText = `할인 수수료는 ${interest} 원입니다.`;
+            if (isNaN(amount) || isNaN(rate) || isNaN(days) || amount <= 0 || rate < 0 || days <= 0) {
+                document.getElementById('result').innerText = '올바른 값을 입력하세요.';
+                return;
+            }
+
+            const interest = (amount * rate * days) / 30;
+            const resultText = `할인 수수료는 ${interest.toLocaleString()} 원입니다.`;
             document.getElementById('result').innerText = resultText;
         }
     </script>
