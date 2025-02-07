@@ -41,6 +41,8 @@
             margin: 0 auto 10px;
             display: block;
             text-align: right;
+            border: 1px solid #ccc;
+            border-radius: 4px;
         }
         button {
             margin-top: 10px;
@@ -50,6 +52,8 @@
             border: none;
             cursor: pointer;
             width: 70%;
+            border-radius: 4px;
+            transition: background-color 0.3s;
         }
         button:hover {
             background-color: #45a049;
@@ -57,6 +61,7 @@
         #result {
             margin-top: 20px;
             font-size: 1.2em;
+            color: #333;
         }
         #formula {
             margin-top: 10px;
@@ -81,7 +86,7 @@
             width: 100%;
         }
         .calendar th, .calendar td {
-            padding: 5px;
+            padding: 10px;
             text-align: center;
             cursor: pointer;
         }
@@ -227,15 +232,15 @@
 
         function changeMonth(direction) {
             selectedDate.setMonth(selectedDate.getMonth() + direction);
+            if (selectedDate.getMonth() < 0) { // 1월 이전으로 넘어가면
+                selectedDate.setFullYear(selectedDate.getFullYear() - 1);
+                selectedDate.setMonth(11); // 12월로 설정
+            } else if (selectedDate.getMonth() > 11) { // 12월 이후로 넘어가면
+                selectedDate.setFullYear(selectedDate.getFullYear() + 1);
+                selectedDate.setMonth(0); // 1월로 설정
+            }
             renderCalendar();
         }
 
         function selectDate(day) {
-            selectedDate.setDate(day);
-            const formattedDate = selectedDate.toISOString().split('T')[0]; // YYYY-MM-DD 형식
-            document.getElementById('days').value = Math.ceil((selectedDate - today) / (1000 * 60 * 60 * 24)) + 1; // 남은 날짜 계산
-            toggleCalendar();
-        }
-    </script>
-</body>
-</html>
+            selectedDate.setDate
