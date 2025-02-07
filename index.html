@@ -77,7 +77,7 @@
             const days = parseFloat(document.getElementById('days').value);
 
             const interest = (amount * rate * 0.01 * days) / 30;
-            const resultText = `할인 수수료 이자는 ${interest.toFixed(2)} 원입니다.`;
+            const resultText = `할인 수수료는 ${interest.toFixed(2)} 원입니다.`;
             document.getElementById('result').innerText = resultText;
         }
     </script>
