@@ -29,7 +29,7 @@
         }
         h1 {
             display: block; /* 화면에 표시 */
-            font-size: 1.5em; /* 크기 조정 */
+            font-size: 2.5em; /* 타이틀 크기 조정 */
             color: #333; /* 색상 */
             margin: 0 0 20px; /* 마진 조정 */
         }
@@ -66,6 +66,7 @@
         #result {
             margin-top: 20px;
             font-size: 1.2em;
+            color: #333; /* 결과 텍스트 색상 */
         }
         #formula {
             margin-top: 10px;
@@ -80,9 +81,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>전자어음할인 수수료 이자 계산기</h1> <!-- 제목을 보이게 -->
-        <h2>전자어음할인 수수료 이자 계산기</h2>
-        <h3>전자어음할인 수수료 이자 계산 공식</h3>
+        <h1>전자어음할인 수수료 이자 계산기</h1>
         <form id="calculator">
             <label for="amount">할인할 전자어음 금액 (원):</label>
             <input type="text" id="amount" oninput="formatNumber(this)" required>
@@ -93,10 +92,10 @@
             <label for="days">남은 날짜:</label>
             <input type="number" id="days" required>
 
-            <button type="button" onclick="calculateInterest()" aria-label="계산하기">계산하기</button>
+            <button type="button" onclick="calculateInterest()">계산하기</button>
         </form>
 
-        <h2 id="result"></h2>
+        <div id="result"></div>
         <div id="formula">
             <div>계산 공식</div>
             <div>(전자어음금액 × (월이자율/100) × 남은날짜) / 30</div>
@@ -120,6 +119,7 @@
             const rate = parseFloat(document.getElementById('rate').value) / 100;
             const days = parseFloat(document.getElementById('days').value);
 
+            // 입력값 확인
             if (isNaN(amount) || isNaN(rate) || isNaN(days) || amount <= 0 || rate < 0 || days < 1) {
                 document.getElementById('result').innerText = '올바른 값을 입력하세요.';
                 return;
