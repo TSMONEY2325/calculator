@@ -130,7 +130,8 @@
         <div id="formula">
             <div>계산 공식</div>
             <div>(전자어음금액 × (월이자율/100) × 남은날짜) / 30</div>
-            </div>
+            <div>※ 남은 날짜는 1일 이상이어야 합니다.</div>
+        </div>
        
         <div id="link">
             <a href="https://tsmoney.co.kr" target="_blank">전자어음할인 신청 바로가기</a>
@@ -236,4 +237,6 @@
                 selectedDate.setMonth(11); // 12월로 설정
             } else if (selectedDate.getMonth() > 11) { // 12월 이후로 넘어가면
                 selectedDate.setFullYear(selectedDate.getFullYear() + 1);
-                selectedDate.setMonth(0); // 1월로
+                selectedDate.setMonth(0); // 1월로 설정
+            }
+            renderCalendar();
