@@ -84,13 +84,13 @@
         <h1>전자어음할인 수수료 이자 계산기</h1>
         <form id="calculator">
             <label for="amount">할인할 전자어음 금액 (원):</label>
-            <input type="number" id="amount" oninput="formatNumber(this)" onfocus="clearInput(this)" required>
+            <input type="text" id="amount" oninput="formatNumber(this)" onfocus="clearInput(this)" required>
 
             <label for="rate">월이자율 (%):</label>
-            <input type="number" id="rate" step="0.01" onfocus="clearInput(this)" required>
+            <input type="text" id="rate" onfocus="clearInput(this)" required>
 
             <label for="days">남은 날짜:</label>
-            <input type="number" id="days" onfocus="clearInput(this)" required>
+            <input type="text" id="days" onfocus="clearInput(this)" required>
 
             <button type="button" onclick="calculateInterest()">계산하기</button>
         </form>
@@ -108,20 +108,22 @@
     </div>
     
     <script>
+        // 숫자 포맷 (쉼표 넣기)
         function formatNumber(input) {
-            const value = input.value.replace(/[^0-9]/g, '');
-            input.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            const value = input.value.replace(/[^0-9]/g, ''); // 숫자만 추출
+            input.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ','); // 세자리마다 쉼표 추가
         }
 
+        // 포커스 시 기존 값 지우기
         function clearInput(input) {
-            if (input.value) {
-                input.value = '';
-            }
+            if (input.value === '') return; // 이미 빈 칸이라면 아무것도 하지 않음
+            input.value = ''; // 기존 값 지우기
         }
 
+        // 이자 계산 함수
         function calculateInterest() {
-            const amountString = document.getElementById('amount').value;
-            const amount = parseFloat(amountString.replace(/,/g, ''));
+            const amountString = document.getElementById('amount').value.replace(/,/g, ''); // 쉼표 제거
+            const amount = parseFloat(amountString);
             const rate = parseFloat(document.getElementById('rate').value) / 100;
             const days = parseFloat(document.getElementById('days').value);
 
