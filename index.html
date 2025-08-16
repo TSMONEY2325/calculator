@@ -43,7 +43,7 @@
       --bg: #f6f7f9;
       --text: #222;
       --muted: #666;
-      --brand: #1a73e8; /* 버튼 색 약간 브랜드 톤 */
+      --brand: #1a73e8;
       --brand-hover: #185fcc;
       --danger: #d93025;
       --card: #fff;
@@ -77,12 +77,13 @@
       display: block;
       margin: 12px 0 6px;
       font-weight: 600;
+      text-align: center;   /* ✅ 라벨 가운데 정렬 */
     }
     .row {
       display: flex;
       gap: 8px;
       align-items: center;
-      justify-content: space-between;
+      justify-content: center; /* ✅ 입력칸+단위도 가운데 정렬 */
     }
     input[type="number"], input[type="text"] {
       width: 100%;
@@ -114,11 +115,13 @@
       margin-top: 12px;
       font-size: .95rem;
       color: var(--muted);
+      text-align: center;   /* ✅ 공식 가운데 */
     }
     #result {
       margin-top: 16px;
       font-size: 1.1rem;
       color: var(--danger);
+      text-align: center;   /* ✅ 결과 가운데 */
     }
     #link {
       margin-top: 18px;
@@ -131,6 +134,7 @@
       font-size: .85rem;
       color: var(--muted);
       margin-top: 6px;
+      text-align: center;   /* ✅ 도움말 가운데 */
     }
   </style>
 </head>
@@ -193,16 +197,14 @@
   </div>
 
   <script>
-    // 전체 선택(값 삭제 대신)
+    // 전체 선택
     function selectAll(el) {
-      // setTimeout으로 포커스 충돌 회피
       setTimeout(() => el.select(), 0);
     }
 
     // 금액 입력: 숫자만, 천단위 콤마
     function formatNumber(input) {
       const digits = input.value.replace(/[^0-9]/g, '');
-      // 빈 값일 때 0으로 깜빡임 방지
       input.value = digits ? digits.replace(/\B(?=(\d{3})+(?!\d))/g, ',') : '';
     }
 
@@ -213,9 +215,9 @@
 
     function calculateInterest() {
       const amount = parseNumber(document.getElementById('amount').value);
-      const rate = Number(document.getElementById('rate').value) / 100; // 월 %
+      const rate = Number(document.getElementById('rate').value) / 100;
       const daysInput = Number(document.getElementById('days').value);
-      const days = Math.floor(daysInput); // 일수는 정수로
+      const days = Math.floor(daysInput);
 
       if (!isFinite(amount) || amount <= 0 ||
           !isFinite(rate)   || rate < 0     ||
@@ -224,10 +226,8 @@
         return;
       }
 
-      // 단순화된 계산식: (금액 × 월이자율 × 일수) / 30
       const interest = Math.round((amount * rate * days) / 30);
       const net = amount - interest;
-
       const fmt = (n) => n.toLocaleString('ko-KR');
 
       document.getElementById('result').textContent =
