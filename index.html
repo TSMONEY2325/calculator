@@ -35,7 +35,6 @@
   <meta name="twitter:description" content="전자어음 할인 수수료와 이자를 즉시 계산하세요.">
   <meta name="twitter:image" content="https://tsmoney2325.github.io/assets/og-calculator.png">
 
-  <!-- 한국어 명시 -->
   <meta http-equiv="content-language" content="ko">
 
   <style>
@@ -81,17 +80,20 @@
     }
     .row {
       display: flex;
-      gap: 8px;
+      justify-content: center; /* 가운데 정렬 */
+    }
+    .input-wrap {
+      display: flex;
       align-items: center;
-      justify-content: center;         /* ✅ 입력칸+단위 세트 가운데 정렬 */
+      gap: 8px;
     }
     input[type="number"], input[type="text"] {
-      width: clamp(180px, 60vw, 260px);/* ✅ 입력칸 폭을 고정/반응형으로 지정 */
+      width: clamp(180px, 60vw, 260px);
       padding: 10px 12px;
       border: 1px solid #d0d7de;
       border-radius: 10px;
       font-size: 16px;
-      text-align: right;               /* ✅ 입력값은 우측 정렬 유지 */
+      text-align: right;
       outline: none;
     }
     input:focus { border-color: var(--brand); box-shadow: 0 0 0 3px rgba(26,115,232,.15); }
@@ -125,10 +127,14 @@
     #link {
       margin-top: 18px;
       text-align: center;
-      font-size: 1.1rem;
     }
-    #link a { color: var(--brand); text-decoration: none; }
-    #link a:hover { text-decoration: underline; }
+    #link a {
+      color: var(--brand);
+      text-decoration: underline; /* 밑줄 */
+      font-weight: 700;            /* 굵게 */
+      font-size: 2.2rem;           /* 두 배 크기 */
+    }
+    #link a:hover { text-decoration-thickness: 3px; }
     .help {
       font-size: .85rem;
       color: var(--muted);
@@ -144,44 +150,29 @@
     <form id="calculator" onsubmit="event.preventDefault(); calculateInterest();">
       <label for="amount">할인할 전자어음 금액</label>
       <div class="row">
-        <input
-          id="amount"
-          type="text"
-          inputmode="numeric"
-          autocomplete="off"
-          placeholder="예: 50,000,000"
-          oninput="formatNumber(this)"
-          onfocus="selectAll(this)"
-          required>
-        <span class="unit">원</span>
+        <div class="input-wrap">
+          <input id="amount" type="text" inputmode="numeric" placeholder="예: 50,000,000"
+            oninput="formatNumber(this)" onfocus="selectAll(this)" required>
+          <span class="unit">원</span>
+        </div>
       </div>
 
       <label for="rate">월 이자율</label>
       <div class="row">
-        <input
-          id="rate"
-          type="number"
-          inputmode="decimal"
-          min="0"
-          step="0.01"
-          placeholder="예: 1.2"
-          onfocus="selectAll(this)"
-          required>
-        <span class="unit">%</span>
+        <div class="input-wrap">
+          <input id="rate" type="number" inputmode="decimal" min="0" step="0.01"
+            placeholder="예: 1.2" onfocus="selectAll(this)" required>
+          <span class="unit">%</span>
+        </div>
       </div>
 
       <label for="days">남은 날짜</label>
       <div class="row">
-        <input
-          id="days"
-          type="number"
-          inputmode="numeric"
-          min="1"
-          step="1"
-          placeholder="예: 17"
-          onfocus="selectAll(this)"
-          required>
-        <span class="unit">일</span>
+        <div class="input-wrap">
+          <input id="days" type="number" inputmode="numeric" min="1" step="1"
+            placeholder="예: 17" onfocus="selectAll(this)" required>
+          <span class="unit">일</span>
+        </div>
       </div>
 
       <button type="submit">계산하기</button>
@@ -196,38 +187,22 @@
   </div>
 
   <script>
-    function selectAll(el) {
-      setTimeout(() => el.select(), 0);
-    }
-
+    function selectAll(el) { setTimeout(() => el.select(), 0); }
     function formatNumber(input) {
       const digits = input.value.replace(/[^0-9]/g, '');
       input.value = digits ? digits.replace(/\B(?=(\d{3})+(?!\d))/g, ',') : '';
     }
-
-    function parseNumber(str) {
-      if (!str) return NaN;
-      return Number(str.toString().replace(/,/g, ''));
-    }
-
+    function parseNumber(str) { return str ? Number(str.replace(/,/g, '')) : NaN; }
     function calculateInterest() {
       const amount = parseNumber(document.getElementById('amount').value);
       const rate = Number(document.getElementById('rate').value) / 100;
-      const daysInput = Number(document.getElementById('days').value);
-      const days = Math.floor(daysInput);
-
-      if (!isFinite(amount) || amount <= 0 ||
-          !isFinite(rate)   || rate < 0     ||
-          !isFinite(days)   || days < 1) {
-        document.getElementById('result').textContent = '올바른 값을 입력하세요.';
-        return;
+      const days = Math.floor(Number(document.getElementById('days').value));
+      if (!isFinite(amount) || amount <= 0 || !isFinite(rate) || rate < 0 || !isFinite(days) || days < 1) {
+        document.getElementById('result').textContent = '올바른 값을 입력하세요.'; return;
       }
-
       const interest = Math.round((amount * rate * days) / 30);
       const net = amount - interest;
-
       const fmt = (n) => n.toLocaleString('ko-KR');
-
       document.getElementById('result').textContent =
         `할인 수수료는 ${fmt(interest)}원, 입금 예정액은 ${fmt(net)}원입니다.`;
     }
